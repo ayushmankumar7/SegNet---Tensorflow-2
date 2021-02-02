@@ -13,3 +13,20 @@ def display_sample(img_list):
 
     plt.show()
 
+
+def create_mask(pred_mask):
+    """
+        [h,w,class] ==> [h,w] ==> [h,w,1]
+    """
+    pred_mask = tf.argmax(pred_mask, axis = -1)
+    pred_mask = tf.expand_dims(pred_mask, axis= -1)
+    return pred_mask 
+
+def show_prediction(dataset = None, num = 1, model):
+    if dataset:
+        for image, mask in dataset.take(num):
+            pred_mask = model.predict(image)
+            display_sample([image[0], mask, create_mask(pred_mask)])
+    else:
+        print("\n\n[-- INFO --] No Dataset Provided !\n\n")
+
