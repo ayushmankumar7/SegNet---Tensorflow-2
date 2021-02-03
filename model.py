@@ -13,7 +13,7 @@ def decoder(input, n_class):
     x = tf.keras.layers.Conv2D(512, (3,3), padding='valid')(x)
     x = tf.keras.layers.BatchNormalization()(x)
 
-    for i in range(1, 4):
+    for i in range(1, 5):
         
         x = tf.keras.layers.UpSampling2D((2,2))(x)
         x = tf.keras.layers.ZeroPadding2D((1,1))(x)
