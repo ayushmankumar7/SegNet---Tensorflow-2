@@ -30,6 +30,5 @@ def segnet():
     dec = decoder(b4, 45)
 
     model = tf.keras.models.Model(inputs = enc.input, outputs = dec)
-    model.summary()
-
-segnet()
+    
+    return model 
