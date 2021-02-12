@@ -20,6 +20,7 @@ def parse_image(img_path):
 def load_data(dataset_path, training_data, val_data):
     N_CHANNELS = 3
     N_CLASSES = 151 
+    SEED = 42
 
     train_dataset = tf.data.Dataset.list_files(dataset_path + training_data + "*.jpg", seed=SEED)
     train_dataset = train_dataset.map(parse_image)
