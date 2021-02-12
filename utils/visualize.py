@@ -22,7 +22,7 @@ def create_mask(pred_mask):
     pred_mask = tf.expand_dims(pred_mask, axis= -1)
     return pred_mask 
 
-def show_prediction(dataset = None, num = 1, model):
+def show_prediction(model , dataset = None, num = 1):
     if dataset:
         for image, mask in dataset.take(num):
             pred_mask = model.predict(image)
