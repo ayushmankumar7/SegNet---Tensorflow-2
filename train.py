@@ -55,14 +55,13 @@ print(dataset['val'])
 for image, mask in dataset['train'].take(1):
     sample_image, sample_mask = image, mask
 
-display_sample([sample_image[0], sample_mask[0]])
+# display_sample([sample_image[0], sample_mask[0]])
 
 
 
 
 
-m = segnet() 
-# print(m.summary())
+m = segnet(input_shape=(128,128, 3), n_class = 45 )
 
 
 
@@ -76,9 +75,10 @@ callbacks = [
     EarlyStopping(monitor = "val_loss", patience = 10, restore_best_weights = False)
 ]
 
+STEPS_PER_EPOCH = TRAINSET_SIZE // BATCH_SIZE
+VALIDATION_STEPS = VALSET_SIZE // BATCH_SIZE
 
-
-# history = m.history(
-#     dataset['train'], epochs = 10, validation_data = dataset['val']
+# history = m.fit(
+#     dataset['train'], epochs = 10, validation_data = dataset['val'],steps_per_epoch=STEPS_PER_EPOCH, validation_steps=VALIDATION_STEPS
 # )
 
