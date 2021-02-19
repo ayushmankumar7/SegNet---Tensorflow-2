@@ -14,7 +14,7 @@ def parse_image(img_path):
     mask = tf.image.decode_png(mask, channels=1)
 
     mask = tf.where(mask == 255, np.dtype('uint8').type(0), mask)
-    return {'image': image, 'mask': mask}
+    return {'image': image, 'segmentation_mask': mask}
 
 
 def load_data(dataset_path, training_data, val_data):
