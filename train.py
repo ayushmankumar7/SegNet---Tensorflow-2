@@ -1,6 +1,9 @@
 import tensorflow as tf 
 import numpy as np 
 from glob import glob
+from tensorflow.keras.metrics import Recall, Precision
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau, CSVLogger, TensorBoard
+
 
 from model import segnet
 from data import load_data 
@@ -20,6 +23,9 @@ print(f"The Validation Dataset contains {VALSET_SIZE} images.")
 
 train_dataset, val_dataset = load_data(dataset_path, training_data, val_data )
 
+LR = 1e-4 
+EPOCHS = 50 
+metrics = ['acc', Recall(), Precision(), iou]
 BATCH_SIZE = 32
 BUFFER_SIZE = 1000
 N_CHANNELS = 3
@@ -51,11 +57,26 @@ for image, mask in dataset['train'].take(1):
 
 display_sample([sample_image[0], sample_mask[0]])
 
+
+
+
+
 m = segnet() 
 # print(m.summary())
 
 
-m.compile(optimizer = tf.keras.optimizers.Adam(), loss = "sparse_categorical_crossentropy", metrics = ['accuracy'])
+
+m.compile(optimizer = tf.keras.optimizers.Adam(LR), loss = "sparse_categorical_crossentropy", metrics = metrics)
+
+callbacks = [
+    ModelCheckpoint("files/model.h5"),
+    ReduceLROnPlateau(monitor ="val_loss", factor =0.1, patience = 3),
+    CSVLogger("files/data.csv"),
+    TensorBoard(),
+    EarlyStopping(monitor = "val_loss", patience = 10, restore_best_weights = False)
+]
+
+
 
 # history = m.history(
 #     dataset['train'], epochs = 10, validation_data = dataset['val']
