@@ -1,5 +1,6 @@
 import tensorflow as tf 
 import matplotlib.pyplot as plt
+import numpy as np
 
 def display_sample(img_list):
     plt.figure(figsize=(18,18))
@@ -30,3 +31,12 @@ def show_prediction(model , dataset = None, num = 1):
     else:
         print("\n\n[-- INFO --] No Dataset Provided !\n\n")
 
+
+
+def iou(y_true, y_pred):
+    def f(y_true, y_pred):
+        intersection = (y_true * y_pred).sum()
+        union = y_true.sum() + y_pred.sum() - intersection
+        x = (intersection + 1e-15) / (union + 1e-15)
+        x = x.astype(np.float32)
+        return x
